@@ -3,11 +3,23 @@ package se.lexicon.anton.demo.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class LibraryUser {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
+	
 	private LocalDate regDate;
 	private String name;
+	
+	@Column(unique = true, length = 50)
 	private String email;
 	
 	public LibraryUser(int userId, LocalDate regDate, String name, String email) {
@@ -16,7 +28,7 @@ public class LibraryUser {
 	}
 
 	public LibraryUser(LocalDate regDate, String name, String email) {
-		setRegDate(regDate);
+		this.regDate = regDate;
 		setName(name);
 		setEmail(email);
 	}
@@ -25,10 +37,6 @@ public class LibraryUser {
 
 	public LocalDate getRegDate() {
 		return regDate;
-	}
-	
-	public void setRegDate(LocalDate regDate) {
-		this.regDate = regDate;
 	}
 	
 	public String getName() {

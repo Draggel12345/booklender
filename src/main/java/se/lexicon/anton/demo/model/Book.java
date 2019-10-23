@@ -3,9 +3,18 @@ package se.lexicon.anton.demo.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Book {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int bookId;
+	
 	private String title;
 	private boolean available;
 	private boolean reserved;
@@ -17,21 +26,14 @@ public class Book {
 		this(title, maxLoanDays, finePerDay, description);
 		this.bookId = bookId;
 	}
-	
-	public Book(String title, boolean available, boolean reserved, int maxLoanDays, BigDecimal finePerDay, String description) {
-		this.title = title;
-		this.available = available;
-		this.reserved = reserved;
-		this.maxLoanDays = maxLoanDays;
-		this.finePerDay = finePerDay;
-		this.description = description;
-	}
 
 	public Book(String title, int maxLoanDays, BigDecimal finePerDay, String description) {
 		setTitle(title);
 		setMaxLoanDays(maxLoanDays);
 		setFinePerDay(finePerDay);
 		setDescription(description);
+		setAvailable(true);
+		setReserved(false);
 	}
 
 	public Book() {}
