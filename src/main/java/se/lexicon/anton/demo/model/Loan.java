@@ -21,12 +21,12 @@ public class Loan {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long loanId;
 	
-	@ManyToOne(fetch = FetchType.LAZY,
+	@ManyToOne(fetch = FetchType.EAGER,
 			cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
 	@JoinColumn(name = "user_id")
 	private LibraryUser loanTaker;
 	
-	@ManyToOne(fetch = FetchType.LAZY,
+	@ManyToOne(fetch = FetchType.EAGER,
 			cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
 	@JoinColumn(name = "book_id")
 	private Book book;
@@ -34,6 +34,14 @@ public class Loan {
 	private LocalDate loanDate;
 	private boolean terminated;
 	
+	public Loan(long loanId, LibraryUser loanTaker, Book book, LocalDate loanDate, boolean terminated) {
+		this.loanId = loanId;
+		this.loanTaker = loanTaker;
+		this.book = book;
+		this.loanDate = loanDate;
+		this.terminated = terminated;
+	}
+
 	public Loan(long loanId, LibraryUser loanTaker, Book book, LocalDate loanDate) {
 		this(loanTaker, book, loanDate);
 		this.loanId = loanId;
