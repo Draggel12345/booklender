@@ -22,7 +22,7 @@ public class TestLoan {
 	public void setUp() {
 		testUser = new LibraryUser(LocalDate.of(2019, 10, 22), "Test", "Test@Lexicon");
 		testBook = new Book("Testing", 30, BigDecimal.valueOf(10.00), "description");
-		testObject = new Loan(0, testUser, testBook, LocalDate.of(2019, 10, 23));
+		testObject = new Loan(0, testUser, testBook, LocalDate.of(2019, 12, 10));
 	}
 	
 	@Test
@@ -30,7 +30,7 @@ public class TestLoan {
 		assertEquals(0, testObject.getLoanId());
 		assertEquals(testUser, testObject.getLoanTaker());
 		assertEquals(testBook, testObject.getBook());
-		assertEquals(LocalDate.of(2019, 10, 23), testObject.getLoanDate());
+		assertEquals(LocalDate.of(2019, 12, 10), testObject.getLoanDate());
 		assertFalse(testObject.isTerminated());
 		assertNotNull(testObject);
 	}
@@ -39,7 +39,7 @@ public class TestLoan {
 	public void test_hashCode_and_equals() {
 		testUser = new LibraryUser(LocalDate.of(2019, 10, 22), "Test", "Test@Lexicon");
 		testBook = new Book("Testing", 30, BigDecimal.valueOf(10.00), "description");
-		Loan copy = new Loan(0, testUser, testBook, LocalDate.of(2019, 10, 23));
+		Loan copy = new Loan(0, testUser, testBook, LocalDate.of(2019, 12, 10));
 		
 		assertTrue(copy.equals(testObject));
 		assertEquals(copy.hashCode(), testObject.hashCode());
@@ -53,8 +53,13 @@ public class TestLoan {
 				toString.contains("0") &&
 				toString.contains(testUser.toString()) &&
 				toString.contains(testBook.toString()) &&
-				toString.contains("2019-10-23")
+				toString.contains("2019-12-10")
 				);
+	}
+	
+	@Test
+	public void testObject_is_not_overdue() {
+		assertFalse(testObject.isOverdue());
 	}
 	
 	@Test
@@ -63,11 +68,6 @@ public class TestLoan {
 		Loan testLoan = new Loan(0, testUser, book, LocalDate.now().minusDays(31));
 		
 		assertTrue(testLoan.isOverdue());
-	}
-	
-	@Test
-	public void testObject_is_not_overdue() {
-		assertFalse(testObject.isOverdue());
 	}
 	
 	@Test
