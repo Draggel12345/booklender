@@ -1,6 +1,7 @@
 package se.lexicon.anton.demo.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -27,62 +28,75 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public Optional<BookDto> findByBookId(int bookId) {
-		return Optional.of(converter.bookToDto(repo.findById(bookId).get())); 
+	public BookDto findById(int bookId) {
+		Optional<Book> optional = repo.findById(bookId);
+		Book book = optional.get();
+		return converter.bookToDto(book);	
 	}
 
 	@Override
-	public List<BookDto> findByTitle(String title) {
-		return converter.booksToDtos(repo.findByTitleStartsWithIgnoreCase(title));
+	public List<BookDto> findByTitle(String title) throws NoSuchElementException {
+		List<Book> books = repo.findByTitleStartsWithIgnoreCase(title);
+		if(books.isEmpty()) {
+			throw new NoSuchElementException("There is no book with the title - " + title + " in the database.");
+		} else {
+			return converter.booksToDtos(books);
+		}
 	}
 
 	@Override
-	public List<BookDto> findByAvailable(boolean available) {
-		return converter.booksToDtos(repo.findByAvailable(available));
+	public List<BookDto> findByAvailable(boolean available) throws NoSuchElementException {
+		List<Book> books = repo.findByAvailable(available);
+		if(books.isEmpty()) {
+			throw new NoSuchElementException("There are no available books in the database.");
+		} else {
+			return converter.booksToDtos(books);
+		}
 	}
 
 	@Override
-	public List<BookDto> findByReserved(boolean reserved) {
-		return converter.booksToDtos(repo.findByReserved(reserved));
+	public List<BookDto> findByReserved(boolean reserved) throws NoSuchElementException{
+		List<Book> books = repo.findByReserved(reserved);
+		if(books.isEmpty()) {
+			throw new NoSuchElementException("There are no reserved books in the database.");
+		} else {
+			return converter.booksToDtos(books);
+		}
 	}
 
 	@Override
-	public List<BookDto> findByAll() {
-		return converter.booksToDtos(repo.findAll());
+	public List<BookDto> findAll() throws NoSuchElementException{
+		List<Book> books = (List<Book>)repo.findAll();
+		if(books.isEmpty()) {
+			throw new NoSuchElementException("There are no books in the database.");
+		} else {
+			return converter.booksToDtos(books);
+		}
 	}
 
 	@Override
 	public BookDto create(BookDto bookDto) {
 		Book book = converter.dtoToBook(bookDto);
-		repo.save(book);
+		book = repo.save(book);
 		return converter.bookToDto(book);
 	}
 
 	@Override
 	public BookDto update(BookDto bookDto) {
-		Book book = converter.dtoToBook(bookDto);
-		Optional<Book> old = repo.findByBookId(book.getBookId());
-		if(old.isPresent()) {
-			
-			Book original = old.get();
-			
-			original.setTitle(book.getTitle());
-			original.setAvailable(book.isAvailable());
-			original.setReserved(book.isReserved());
-			original.setMaxLoanDays(book.getMaxLoanDays());
-			original.setFinePerDay(book.getFinePerDay());
-			original.setDescription(book.getDescription());
-			
-			repo.save(original);
-			return converter.bookToDto(original);
-		}
+		Book old = repo.findById(bookDto.getBookId()).get();
 		
-		return converter.bookToDto(book);
+		old.setTitle(bookDto.getTitle());
+		old.setDescription(bookDto.getDescription());
+		old.setMaxLoanDays(bookDto.getMaxLoanDays());
+		old.setFinePerDay(bookDto.getFinePerDay());
+		
+		repo.save(old);
+		return bookDto;
 	}
 
 	@Override
 	public boolean delete(int bookId) {
-		Optional<Book> toRemove = repo.findByBookId(bookId);
+		Optional<Book> toRemove = repo.findById(bookId);
 		if(toRemove.isPresent()) {
 			Book old = toRemove.get();
 			repo.delete(old);

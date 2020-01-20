@@ -1,6 +1,7 @@
 package se.lexicon.anton.demo.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -27,21 +28,26 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 	}
 
 	@Override
-	public Optional<LibraryUserDto> findById(int userId) {
-		
-		return Optional.of(converter.libraryUserToDto(repo.findById(userId).get()));
+	public LibraryUserDto findById(int userId)  {
+		Optional<LibraryUser> user = repo.findById(userId);
+		LibraryUser original = user.get();
+		return converter.libraryUserToDto(original);
 	}
 
 	@Override
-	public Optional<LibraryUserDto> findByEmail(String email) {
-		
-		return Optional.of(converter.libraryUserToDto(repo.findByEmailStartsWithIgnoreCase(email).get()));
-		
+	public LibraryUserDto findByEmail(String email) {
+		Optional<LibraryUser> user = repo.findByEmail(email);
+		LibraryUser original = user.get();
+		return converter.libraryUserToDto(original);
 	}
 
 	@Override
-	public List<LibraryUserDto> findAll() {
-		return converter.libraryUsersToDtos(repo.findAll());
+	public List<LibraryUserDto> findAll() throws NoSuchElementException {
+		List<LibraryUser> users = (List<LibraryUser>)repo.findAll();
+		if(users.isEmpty()) {
+			throw new NoSuchElementException("There are no library users in the database.");
+		}
+		return converter.libraryUsersToDtos(users);
 	}
 
 	/**
@@ -53,27 +59,20 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 	@Override
 	public LibraryUserDto create(LibraryUserDto dto) {
 		LibraryUser user = converter.dtoToLibraryUser(dto);
-		repo.save(user);
+		user = repo.save(user);
 		return converter.libraryUserToDto(user);
 		
 	}
 
 	@Override
 	public LibraryUserDto update(LibraryUserDto dto) {
-		LibraryUser user = converter.dtoToLibraryUser(dto);
-		Optional<LibraryUser> old = repo.findByUserId(user.getUserId());
-		if(old.isPresent()) {
-			
-			LibraryUser original = old.get();
-			
-			original.setName(user.getName());
-			original.setEmail(user.getEmail());
-			
-			repo.save(original);
-			return converter.libraryUserToDto(original);
-		}
+		LibraryUser old = repo.findById(dto.getUserId()).get();
 		
-		return converter.libraryUserToDto(user);
+		old.setName(dto.getName());
+		old.setEmail(dto.getEmail());
+			
+		repo.save(old);
+		return dto;
 	}
 
 	@Override
