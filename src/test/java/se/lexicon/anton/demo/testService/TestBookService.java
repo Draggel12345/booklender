@@ -3,8 +3,6 @@ import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.junit.After;
@@ -34,18 +32,19 @@ public class TestBookService {
 	
 	@Before
 	public void setUp() {
-		book1 = new Book(0, "Java", true, false, 30, BigDecimal.valueOf(10), "description");
+		book1 = new Book("Java", 30, BigDecimal.valueOf(10), "description");
 		book1 = repo.save(book1);
-		book2 = new Book(0, "OCA", false, true, 30, BigDecimal.valueOf(10), "description");
+		book2 = new Book("OCA", 30, BigDecimal.valueOf(10), "description");
 		book2 = repo.save(book2);
+		book2.setReserved(true);
 	}
 	
 	@Test
 	public void given_id_should_return_optional_of_findById() {
 		int id = book1.getBookId();
-		Optional<BookDto> result = testObject.findByBookId(id);
-		assertTrue(result.isPresent());
-		assertEquals(id, result.get().getBookId());
+		BookDto result = testObject.findById(id);
+		
+		assertEquals(id, result.getBookId());
 	}
 	
 	@Test
@@ -57,9 +56,9 @@ public class TestBookService {
 	}
 	
 	@Test
-	public void book_available_should_return_list_size_of_1() {
+	public void book_available_should_return_list_size_of_2() {
 		boolean bookToFind = book1.isAvailable();
-		int expectedSize = 1;
+		int expectedSize = 2;
 		List<BookDto> result = testObject.findByAvailable(bookToFind);
 		assertEquals(expectedSize, result.size());
 	}
@@ -75,13 +74,13 @@ public class TestBookService {
 	@Test
 	public void findAll_should_return_list_size_of_2() {
 		int expectedSize = 2;
-		List<BookDto> result = testObject.findByAll();
+		List<BookDto> result = testObject.findAll();
 		assertEquals(expectedSize, result.size());
 	}
 	
 	@Test
 	public void create_object_from_dto_successfully() {
-		Book toCreate = new Book(0, "Lexicon", true, false, 30, BigDecimal.valueOf(10), "description");
+		Book toCreate = new Book("Lexicon", 30, BigDecimal.valueOf(10), "description");
 		BookDto dto = new BookDto();
 		dto.setBookId(toCreate.getBookId());
 		dto.setTitle(toCreate.getTitle());

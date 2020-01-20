@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.junit.After;
@@ -40,20 +38,20 @@ public class TestLibraryUserService {
 	}
 	
 	@Test
-	public void given_id_should_return_optional_of_findById() {
+	public void given_id_should_be_equal_of_findById() {
 		int id = user.getUserId();
 		System.out.println(id);
-		Optional<LibraryUserDto> result = testObject.findById(id);
-		assertTrue(result.isPresent());
-		assertEquals(id, result.get().getUserId());
+		LibraryUserDto result = testObject.findById(id);
+		
+		assertEquals(id, result.getUserId());
 	}
 	
 	@Test
-	public void given_email_should_return_optional_of_findByEmail() {
+	public void given_email_should_be_equal_of_findByEmail() {
 		String email = user.getEmail();
-		Optional<LibraryUserDto> result = testObject.findByEmail(email);
-		assertTrue(result.isPresent());
-		assertEquals(email, result.get().getEmail());
+		LibraryUserDto result = testObject.findByEmail(email);
+		
+		assertEquals(email, result.getEmail());
 	}
 	
 	@Test

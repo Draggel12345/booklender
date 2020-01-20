@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.junit.After;
@@ -60,11 +58,11 @@ public class TestLoanService {
 	}
 	
 	@Test
-	public void given_id_should_return_optional_of_loanId() {
+	public void given_id_should_be_equal_of_findById() {
 		long id = loan.getLoanId();
-		Optional<LoanDto> result = testObject.findByLoanId(id);
-		assertTrue(result.isPresent());
-		assertEquals(id, result.get().getLoanId());
+		LoanDto result = testObject.findById(id);
+
+		assertEquals(id, result.getLoanId());
 	}
 	
 	@Test
@@ -99,7 +97,7 @@ public class TestLoanService {
 	@Test
 	public void testing_findByAll_method() {
 		int expectedSize = 2;
-		List<LoanDto> result = testObject.findByAll();
+		List<LoanDto> result = testObject.findAll();
 		assertEquals(expectedSize, result.size());
 	}
 	
