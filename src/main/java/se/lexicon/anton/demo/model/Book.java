@@ -21,16 +21,6 @@ public class Book {
 	private int maxLoanDays;
 	private BigDecimal finePerDay;
 	private String description;
-	
-	public Book(int bookId, String title, boolean available, boolean reserved, int maxLoanDays, BigDecimal finePerDay, String description) {
-		this.bookId = bookId;
-		this.title = title;
-		this.available = available;
-		this.reserved = reserved;
-		this.maxLoanDays = maxLoanDays;
-		this.finePerDay = finePerDay;
-		this.description = description;
-	}
 
 	public Book(int bookId, String title, int maxLoanDays, BigDecimal finePerDay, String description) {
 		this(title, maxLoanDays, finePerDay, description);
@@ -46,7 +36,7 @@ public class Book {
 		setReserved(false);
 	}
 
-	public Book() {}
+	public Book(){}
 	
 	public String getTitle() {
 		return title;

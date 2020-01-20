@@ -34,13 +34,6 @@ public class Loan {
 	private LocalDate loanDate;
 	private boolean terminated;
 	
-	public Loan(long loanId, LibraryUser loanTaker, Book book, LocalDate loanDate, boolean terminated) {
-		this.loanId = loanId;
-		this.loanTaker = loanTaker;
-		this.book = book;
-		this.loanDate = loanDate;
-		this.terminated = terminated;
-	}
 
 	public Loan(long loanId, LibraryUser loanTaker, Book book, LocalDate loanDate) {
 		this(loanTaker, book, loanDate);
@@ -54,7 +47,7 @@ public class Loan {
 		this.terminated = false;
 	}
 	
-	public Loan() {}
+	public Loan(){}
 	
 	public boolean isOverdue() {
 		LocalDate dueDate = loanDate.plusDays(book.getMaxLoanDays());
