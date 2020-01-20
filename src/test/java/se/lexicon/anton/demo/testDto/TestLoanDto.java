@@ -35,7 +35,12 @@ public class TestLoanDto {
 	testBook.setFinePerDay(BigDecimal.valueOf(10));
 	testBook.setDescription("description");
 	
-	testObject = new LoanDto(1, testUser, testBook, LocalDate.of(2019, 10, 24));
+	testObject = new LoanDto();
+	testObject.setLoanId(1);
+	testObject.setLoanTaker(testUser);
+	testObject.setBook(testBook);
+	testObject.setLoanDate(LocalDate.of(2019, 10, 24));
+	testObject.setTerminated(false);
 	}
 	
 	@Test
@@ -46,5 +51,6 @@ public class TestLoanDto {
 		assertEquals(testUser, testObject.getLoanTaker());
 		assertEquals(testBook, testObject.getBook());
 		assertEquals(LocalDate.of(2019, 10, 24), testObject.getLoanDate());
+		assertEquals(false, testObject.isTerminated());
 	}
 }
