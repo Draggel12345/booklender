@@ -10,15 +10,15 @@ public class LoanDto {
 	private LocalDate loanDate;
 	private boolean terminated;
 	
-	public LoanDto(long loanId, LibraryUserDto loanTaker, BookDto book, LocalDate loanDate) {
-		setLoanId(loanId);
-		setLoanTaker(loanTaker);
-		setBook(book);
-		setLoanDate(loanDate);
-	}
-
 	public LoanDto() {}
 	
+	public LoanDto(long loanId, LibraryUserDto loanTaker, BookDto book, LocalDate loanDate) {
+		this.loanId = loanId;
+		this.loanTaker = loanTaker;
+		this.book = book;
+		this.loanDate = loanDate;
+	}
+
 	public long getLoanId() {
 		return loanId;
 	}
