@@ -45,13 +45,13 @@ public class TestBookRepo {
 	@Test
 	public void given_id_should_return_optional_of_bookId() {
 		int id = testBook.getBookId();
-		Optional<Book> result = testObject.findByBookId(id);
+		Optional<Book> result = testObject.findById(id);
 		assertTrue(result.isPresent());
 		assertEquals(id, result.get().getBookId());
 	}
 	
 	@Test
-	public void given_jav_should_return_optional_of_title() {
+	public void given_jav_should_return_list_size_of_1() {
 		String title = "jav";
 		int expectedSize = 1;
 		List<Book> result = testObject.findByTitleStartsWithIgnoreCase(title);
@@ -78,7 +78,7 @@ public class TestBookRepo {
 		Book book = new Book("C++", 30, BigDecimal.valueOf(10), "description");
 		testObject.save(book);
 		int expectedSize = 2;
-		List<Book> result = testObject.findAll();
+		List<Book> result = (List<Book>) testObject.findAll();
 		assertEquals(expectedSize, result.size());
 	}
 }

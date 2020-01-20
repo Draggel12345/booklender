@@ -42,7 +42,7 @@ public class TestLibraryUserRepo {
 	}
 	
 	@Test
-	public void given_id_should_return_optional_of_librayUser_Id() {
+	public void given_id_should_be_equal_librayUser_Id() {
 		int id = testUser.getUserId();
 		Optional<LibraryUser> result = testObject.findById(id);
 		assertTrue(result.isPresent());
@@ -50,17 +50,18 @@ public class TestLibraryUserRepo {
 	}
 	
 	@Test
-	public void given_email_should_return_optional_of_libraryUser_email() {
-		String email = "Test@Lexic";
-		Optional<LibraryUser> result = testObject.findByEmailStartsWithIgnoreCase(email);
+	public void given_email_should_be_equal_result_email() {
+		String email = "Test@Lexicon.se";
+		
+		Optional<LibraryUser> result = testObject.findByEmail(email);
 		assertTrue(result.isPresent());
-		assertEquals("Test@Lexicon.se", result.get().getEmail());
+		assertEquals(email, result.get().getEmail());
 	}
 	
 	@Test
 	public void given_findAll_should_return_size_1_of_list() {
 		int expectedSize = 1;
-		List<LibraryUser> result = testObject.findAll();
+		List<LibraryUser> result = (List<LibraryUser>)testObject.findAll();
 		assertEquals(expectedSize, result.size());
 	}
 	
