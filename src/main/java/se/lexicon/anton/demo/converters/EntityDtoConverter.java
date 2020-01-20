@@ -26,9 +26,9 @@ public class EntityDtoConverter extends EntityFactory {
 		return dto;
 	}
 	
-	public List<LibraryUserDto> libraryUsersToDtos(List<LibraryUser> users) {
+	public List<LibraryUserDto> libraryUsersToDtos(Iterable<LibraryUser> iterable) {
 		List<LibraryUserDto> dtos = new ArrayList<>();
-		for(LibraryUser user : users) {
+		for(LibraryUser user : iterable) {
 			dtos.add(libraryUserToDto(user));
 		}
 		return dtos;
@@ -64,9 +64,9 @@ public class EntityDtoConverter extends EntityFactory {
 		return dto;
 	}
 	
-	public List<BookDto> booksToDtos(List<Book> books) {
+	public List<BookDto> booksToDtos(Iterable<Book> iterable) {
 		List<BookDto> dtos = new ArrayList<>();
-		for(Book book : books) {
+		for(Book book : iterable) {
 			dtos.add(bookToDto(book));
 		}
 		return dtos;
@@ -99,7 +99,7 @@ public class EntityDtoConverter extends EntityFactory {
 		dto.setLoanTaker(libraryUserToDto(loan.getLoanTaker()));
 		dto.setBook(bookToDto(loan.getBook()));
 		dto.setLoanDate(loan.getLoanDate());
-		dto.setTerminated(false);
+		dto.setTerminated(loan.isTerminated());
 		return dto;
 	}
 	
