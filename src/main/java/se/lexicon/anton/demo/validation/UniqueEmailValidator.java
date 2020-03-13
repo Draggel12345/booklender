@@ -6,10 +6,12 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import se.lexicon.anton.demo.data.LibraryUserRepo;
 import se.lexicon.anton.demo.model.LibraryUser;
 
+@Component
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
 	private LibraryUserRepo repo;
